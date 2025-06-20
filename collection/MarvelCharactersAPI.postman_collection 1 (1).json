@@ -1,0 +1,260 @@
+{
+  "info": {
+    "_postman_id": "marvel-api-collection-001",
+    "name": "Marvel Characters API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Colección de pruebas para la API REST de personajes de Marvel, incluyendo casos exitosos, validaciones y errores de nombre duplicado. Ahora con username en la ruta."
+  },
+  "item": [
+    {
+      "name": "Obtener todos los personajes",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://bp-se-test-cabcd9b246a5.herokuapp.com/aruedago/api/characters",
+          "protocol": "http",
+          "host": ["bp-se-test-cabcd9b246a5.herokuapp.com"],
+          "path": ["aruedago", "api", "characters"]
+        }
+      },
+      "response": [
+        {
+          "name": "200 OK - Lista vacía",
+          "originalRequest": {},
+          "status": "OK",
+          "code": 200,
+          "body": "[]"
+        }
+      ]
+    },
+    {
+      "name": "Obtener personaje por ID (exitoso)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://bp-se-test-cabcd9b246a5.herokuapp.com/aruedago/api/characters/1",
+          "protocol": "http",
+          "host": ["bp-se-test-cabcd9b246a5.herokuapp.com"],
+          "path": ["aruedago", "api", "characters", "1"]
+        }
+      },
+      "response": [
+        {
+          "name": "200 OK",
+          "originalRequest": {},
+          "status": "OK",
+          "code": 200,
+          "body": "{\n  \"id\": 1,\n  \"name\": \"Iron Man\",\n  \"alterego\": \"Tony Stark\",\n  \"description\": \"Genius billionaire\",\n  \"powers\": [\"Armor\", \"Flight\"]\n}"
+        }
+      ]
+    },
+    {
+      "name": "Obtener personaje por ID (no existe)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://bp-se-test-cabcd9b246a5.herokuapp.com/aruedago/api/characters/999",
+          "protocol": "http",
+          "host": ["bp-se-test-cabcd9b246a5.herokuapp.com"],
+          "path": ["aruedago", "api", "characters", "999"]
+        }
+      },
+      "response": [
+        {
+          "name": "404 Not Found",
+          "originalRequest": {},
+          "status": "Not Found",
+          "code": 404,
+          "body": "{\n  \"error\": \"Character not found\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Crear personaje (exitoso)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Iron Man\",\n  \"alterego\": \"Tony Stark\",\n  \"description\": \"Genius billionaire\",\n  \"powers\": [\"Armor\", \"Flight\"]\n}"
+        },
+        "url": {
+          "raw": "http://bp-se-test-cabcd9b246a5.herokuapp.com/aruedago/api/characters",
+          "protocol": "http",
+          "host": ["bp-se-test-cabcd9b246a5.herokuapp.com"],
+          "path": ["aruedago", "api", "characters"]
+        }
+      },
+      "response": [
+        {
+          "name": "201 Created",
+          "originalRequest": {},
+          "status": "Created",
+          "code": 201,
+          "body": "{\n  \"id\": 1,\n  \"name\": \"Iron Man\",\n  \"alterego\": \"Tony Stark\",\n  \"description\": \"Genius billionaire\",\n  \"powers\": [\"Armor\", \"Flight\"]\n}"
+        }
+      ]
+    },
+    {
+      "name": "Crear personaje (nombre duplicado)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Iron Man\",\n  \"alterego\": \"Otro\",\n  \"description\": \"Otro\",\n  \"powers\": [\"Armor\"]\n}"
+        },
+        "url": {
+          "raw": "http://bp-se-test-cabcd9b246a5.herokuapp.com/aruedago/api/characters",
+          "protocol": "http",
+          "host": ["bp-se-test-cabcd9b246a5.herokuapp.com"],
+          "path": ["aruedago", "api", "characters"]
+        }
+      },
+      "response": [
+        {
+          "name": "400 Bad Request - Nombre duplicado",
+          "originalRequest": {},
+          "status": "Bad Request",
+          "code": 400,
+          "body": "{\n  \"error\": \"Character name already exists\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Crear personaje (faltan campos requeridos)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"\",\n  \"alterego\": \"\",\n  \"description\": \"\",\n  \"powers\": []\n}"
+        },
+        "url": {
+          "raw": "http://bp-se-test-cabcd9b246a5.herokuapp.com/aruedago/api/characters",
+          "protocol": "http",
+          "host": ["bp-se-test-cabcd9b246a5.herokuapp.com"],
+          "path": ["aruedago", "api", "characters"]
+        }
+      },
+      "response": [
+        {
+          "name": "400 Bad Request",
+          "originalRequest": {},
+          "status": "Bad Request",
+          "code": 400,
+          "body": "{\n  \"name\": \"Name is required\",\n  \"alterego\": \"Alterego is required\",\n  \"description\": \"Description is required\",\n  \"powers\": \"Powers are required\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Actualizar personaje (exitoso)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Iron Man\",\n  \"alterego\": \"Tony Stark\",\n  \"description\": \"Updated description\",\n  \"powers\": [\"Armor\", \"Flight\"]\n}"
+        },
+        "url": {
+          "raw": "http://bp-se-test-cabcd9b246a5.herokuapp.com/aruedago/api/characters/1",
+          "protocol": "http",
+          "host": ["bp-se-test-cabcd9b246a5.herokuapp.com"],
+          "path": ["aruedago", "api", "characters", "1"]
+        }
+      },
+      "response": [
+        {
+          "name": "200 OK",
+          "originalRequest": {},
+          "status": "OK",
+          "code": 200,
+          "body": "{\n  \"id\": 1,\n  \"name\": \"Iron Man\",\n  \"alterego\": \"Tony Stark\",\n  \"description\": \"Updated description\",\n  \"powers\": [\"Armor\", \"Flight\"]\n}"
+        }
+      ]
+    },
+    {
+      "name": "Actualizar personaje (no existe)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Iron Man\",\n  \"alterego\": \"Tony Stark\",\n  \"description\": \"Updated description\",\n  \"powers\": [\"Armor\", \"Flight\"]\n}"
+        },
+        "url": {
+          "raw": "http://bp-se-test-cabcd9b246a5.herokuapp.com/aruedago/api/characters/999",
+          "protocol": "http",
+          "host": ["bp-se-test-cabcd9b246a5.herokuapp.com"],
+          "path": ["aruedago", "api", "characters", "999"]
+        }
+      },
+      "response": [
+        {
+          "name": "404 Not Found",
+          "originalRequest": {},
+          "status": "Not Found",
+          "code": 404,
+          "body": "{\n  \"error\": \"Character not found\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Eliminar personaje (exitoso)",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://bp-se-test-cabcd9b246a5.herokuapp.com/aruedago/api/characters/1",
+          "protocol": "http",
+          "host": ["bp-se-test-cabcd9b246a5.herokuapp.com"],
+          "path": ["aruedago", "api", "characters", "1"]
+        }
+      },
+      "response": [
+        {
+          "name": "204 No Content",
+          "originalRequest": {},
+          "status": "No Content",
+          "code": 204,
+          "body": ""
+        }
+      ]
+    },
+    {
+      "name": "Eliminar personaje (no existe)",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://bp-se-test-cabcd9b246a5.herokuapp.com/aruedago/api/characters/999",
+          "protocol": "http",
+          "host": ["bp-se-test-cabcd9b246a5.herokuapp.com"],
+          "path": ["aruedago", "api", "characters", "999"]
+        }
+      },
+      "response": [
+        {
+          "name": "404 Not Found",
+          "originalRequest": {},
+          "status": "Not Found",
+          "code": 404,
+          "body": "{\n  \"error\": \"Character not found\"\n}"
+        }
+      ]
+    }
+  ]
+}

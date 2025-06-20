@@ -7,7 +7,6 @@ java {
     targetCompatibility = JavaVersion.VERSION_17
 }
 
-
 group 'com.example'
 version '1.0-SNAPSHOT'
 
@@ -16,14 +15,31 @@ repositories {
 }
 
 dependencies {
-    
-    testImplementation 'com.intuit.karate:karate-junit5:1.4.1',
-            "com.intuit.karate:karate-netty:0.9.2",
-            "com.intuit.karate:karate-apache:0.9.6",
-            "net.masterthought:cucumber-reporting:5.8.1",
-            'junit:junit:4.13.2'
+    // Usar versiones consistentes de Karate
+    testImplementation 'com.intuit.karate:karate-junit5:1.4.1'
+    testImplementation 'com.intuit.karate:karate-core:1.4.1'
+    testImplementation "net.masterthought:cucumber-reporting:5.8.1"
 }
 
 test {
     useJUnitPlatform()
+    // Configurar propiedades del sistema para los tests
+    systemProperty "karate.options", System.properties.getProperty("karate.options")
+    systemProperty "karate.env", System.properties.getProperty("karate.env", "dev")
+    
+    // Configurar el formato de salida
+    outputs.upToDateWhen { false }
+    
+    // Parallelización de tests
+    systemProperty "karate.config.dir", "src/test/java"
+}
+
+// Asegurarse de que los archivos feature se incluyen en el classpath
+sourceSets {
+    test {
+        resources {
+            srcDir file('src/test/java')
+            exclude '**/*.java'
+        }
+    }
 }
